@@ -26,14 +26,15 @@ const SettingsForm = ({ user, onUpdateSuccess }) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Vérifier le type de fichier
+
+    // Vérifier le type de fichier on va pas filtrer pour l'instant
     if (!file.type.match('image.*')) {
       setError('Veuillez sélectionner une image valide');
       return;
     }
 
-    // Vérifier la taille du fichier (max 2MB)
-    if (file.size > 2 * 1024 * 1024) {
+    // Vérifier la taille du fichier (max 2MB mais la base64 peut supproter jusqu'à environ 10MB) à prévoir un compresseur automatique comme ça on pourra augmenter cette limite
+    if (file.size > 8 * 1024 * 1024) {
       setError('L\'image ne doit pas dépasser 2MB');
       return;
     }

@@ -22,7 +22,7 @@ router.post('/signup',
     body('password').isLength({ max: 32 }).withMessage('Le mot de passe doit faire au plus 32 caractères'),
 
     body('username').notEmpty().withMessage('Le nom d\'utilisateur est requis'),
-    body('username').isLength({ min: 6 }).withMessage('Le nom d\'utilisateur doit faire au moins 3 caractères'),
+    body('username').isLength({ min: 3 }).withMessage('Le nom d\'utilisateur doit faire au moins 3 caractères'),
     body('username').isLength({ max: 32 }).withMessage('Le nom d\'utilisateur doit faire au plus 32 caractères'),
 
     body('displayName').notEmpty().withMessage('Le nom d\'affichage est requis'),
@@ -77,7 +77,7 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Utilisateur non trouvé' });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
       return res.status(400).json({ error: 'Mot de passe incorrect' });
@@ -100,7 +100,7 @@ router.post('/login', async (req, res) => {
         username: user.username,
         email: user.email,
         displayName: user.displayName,
-        profilePicture: userProfilePic.dataValues.profilePicture
+        profilePicture: userProfilePic?.dataValues?.profilePicture
       }
     });
   } catch (err) {
