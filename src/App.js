@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import LoginForm from './components/LoginForm';
 import SettingsForm from './components/SettingsForm';
+import StaffForm from './components/StaffForm';
 import { 
   User, 
   MessageSquare, 
@@ -10,7 +11,8 @@ import {
   LogOut,
   Settings,
   Menu,
-  X
+  X,
+  ScanEye
 } from 'lucide-react';
 import './App.css';
 
@@ -20,7 +22,7 @@ function App() {
   console.log(user);
   const [activeSection, setActiveSection] = useState('messages');
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
-
+  const [userisadmin, setUserisadmin] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -29,6 +31,8 @@ function App() {
     if (token && savedUser) {
       setIsAuthenticated(true);
       setUser(JSON.parse(savedUser));
+      setUserisadmin(JSON.parse(savedUser).isadmin);
+      console.log(JSON.parse(savedUser).isadmin);
 
 
     }
@@ -52,6 +56,21 @@ function App() {
       setIsMobileSidebarOpen(false);
     }
   };
+
+  const handleStaff = () => {
+    setActiveSection('staff');
+    if (isMobileSidebarOpen) {
+      setIsMobileSidebarOpen(false);
+    }
+  };
+  
+  const Handletesst = () => {
+    const token = localStorage.getItem('token');
+    const savedUser = localStorage.getItem('user');
+    console.log(token);
+    console.log(savedUser);
+
+  }
 
   const handleUserUpdate = (updatedUser) => {
     setUser(updatedUser);
@@ -171,8 +190,18 @@ function App() {
         </nav>
 
         {/* Bouton de param et de déconnexion */}
+        
         <div className="buttons-container p-4 mt-auto border-t border-blue-600">
           <div className="flex gap-3 justify-between">
+            {userisadmin === 1 || userisadmin == 2 &&(
+              <button 
+                onClick={Handletesst} 
+                className={`staff-btn flex-1 py-2 px-3 ${activeSection === 'staff' ? 'bg-blue-800' : 'bg-blue-700 hover:bg-blue-600'} text-white rounded-md transition flex items-center justify-center`}
+              >
+                <ScanEye size={16} className="mr-1" />
+                <span>Staff</span>
+              </button>
+            )}
             <button 
               onClick={handleSettings} 
               className={`settings-btn flex-1 py-2 px-3 ${activeSection === 'settings' ? 'bg-gray-800' : 'bg-gray-700 hover:bg-gray-600'} text-white rounded-md transition flex items-center justify-center`}
@@ -192,7 +221,7 @@ function App() {
       </aside>
 
       {/* Contenu principal */}
-      <main className="main-content flex-grow p-4 md:p-8">
+      <main className="main-content flex-grow overflow-y-auto p-4 md:p-8">
         <header className="main-header mb-8">
           <h1 className="text-3xl font-bold text-gray-800">Spectral Portal, Welcome {user.displayName || user.username}</h1>
         </header>
