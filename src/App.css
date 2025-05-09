@@ -140,6 +140,21 @@ ul {
   margin-bottom: 0.5rem;
 }
 
+.staff-btn {
+  background-color: rgba(0, 183, 255, 0.9);
+  color: white;
+  padding: 0.7rem 0.5rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  flex: 1;
+  width:100%;
+  margin-bottom: 0.5rem;
+}
+
 .settings-btn:hover {
   background-color: rgba(75, 85, 99, 1);
 }
@@ -166,11 +181,16 @@ ul {
   margin-right: 0.4rem;
 }
 
+.staff-btn svg, .logout-btn svg {
+  margin-right: 0.4rem;
+}
+
+
 .main-content {
   flex: 1;
-  padding: 2rem;
+  max-height: 100%;
   overflow-y: auto;
-  transition: var(--transition);
+  margin-top: 2%;
 }
 
 .main-header {
@@ -184,6 +204,7 @@ ul {
   font-weight: 600;
   color: var(--primary);
   margin-bottom: 0.5rem;
+  margin-left: 5%;
 }
 
 .content-section {
