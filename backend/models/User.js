@@ -24,9 +24,17 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  profilePicture: {
-    type: DataTypes.TEXT('long'),
-    allowNull: true,
+  isadmin: {
+    type: DataTypes.INTEGER,
+    defaultValue: false,
+  },
+  isbanned: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+  isbannedreason: {
+    type: DataTypes.STRING,
+    defaultValue: null,
   },
 }, {
   timestamps: true,
