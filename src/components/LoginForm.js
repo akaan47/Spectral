@@ -167,6 +167,7 @@ const LoginForm = ({ onSuccess }) => {
             password: formData.password
           });
           
+          
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('user', JSON.stringify(response.data.user));
           
@@ -180,7 +181,9 @@ const LoginForm = ({ onSuccess }) => {
             username: formData.username,
             displayName: formData.displayName,
             email: formData.email,
-            password: formData.password
+            password: formData.password,
+            isadmin: formData.isadmin || false,
+            isbanned: formData.isbanned || false,
           });
           
           console.log('Inscription réussie', response.data);
