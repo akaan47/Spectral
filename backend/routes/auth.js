@@ -36,7 +36,7 @@ router.post('/signup',
     }
 
     const { username, displayName, email, password } = req.body;
-
+    
     try {
       const existingUser = await User.findOne({ where: { email } });
       if (existingUser) {
@@ -56,6 +56,9 @@ router.post('/signup',
         displayName,
         email,
         password: hashedPassword,
+        isadmin: false,
+        isbanned: false,
+        isbannedreason: null,
       });
 
       res.status(201).json({ ok: true, message: 'Utilisateur créé avec succès !', user });
@@ -84,7 +87,7 @@ router.post('/login', async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user.user_id, username: user.username, email: user.email },
+      { id: user.user_id, username: user.username, email: user.email, isadmin: user.isadmin, isbanned: user.isbanned },
       SECRET_KEY,
       { expiresIn: process.env.JWT_EXPIRATION || '12h' }
     );
@@ -100,7 +103,8 @@ router.post('/login', async (req, res) => {
         username: user.username,
         email: user.email,
         displayName: user.displayName,
-        profilePicture: userProfilePic?.dataValues?.profilePicture
+        isadmin: user.isadmin,
+        isbanned: user.isbanned,
       }
     });
   } catch (err) {
