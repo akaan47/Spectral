@@ -16,6 +16,10 @@ app.use('/auth', authRoutes);
 const userRoutes = require('./routes/user');
 app.use('/user', userRoutes);
 
+const staffRoutes = require('./routes/staff');
+app.use('/staff', staffRoutes);
+
+
 sequelize.sync().then(() => {
   console.log('Base de données synchronisée');
   
