@@ -8,6 +8,7 @@ const SettingsForm = ({ user, onUpdateSuccess }) => {
     displayName: user.displayName || '',
     email: user.email || '',
     profilePicture: user.profilePicture || null,
+    isadmin: user.isadmin || 0,
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -82,7 +83,8 @@ const SettingsForm = ({ user, onUpdateSuccess }) => {
           username: formData.username,
           displayName: formData.displayName,
           email: formData.email,
-          profilePicture: formData.profilePicture
+          profilePicture: formData.profilePicture,
+          isadmin: formData.isadmin
         })
       });
 

@@ -213,6 +213,7 @@ ul {
   padding: 2rem;
   box-shadow: var(--shadow-sm);
   margin-bottom: 2rem;
+  margin-left: 10px;
 }
 
 .content-section h2 {
