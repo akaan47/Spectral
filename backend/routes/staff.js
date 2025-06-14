@@ -26,6 +26,9 @@ router.post('/banid', async (req, res) => {
         if (!isadminlocal) {
             return res.status(400).json({ error: 'Vous n\'avez pas la permission de bannir cet utilisateur' });
         }
+        if (isadminlocal == 0) {
+            return res.status(400).json({ error: 'Vous n\'avez pas la permission de bannir cet utilisateur' });
+        }
         if (!author_id || !user_id || !reason) {
             return res.status(400).json({ error: 'Tous les champs sont requis' });
         }
@@ -72,5 +75,84 @@ router.post('/banid', async (req, res) => {
     }
     }
 );
+
+router.post('/unbanid', async (req, res) => {
+    const {isadminlocal ,author_id, user_id} = req.body;
+
+    const author = await User.findOne({ where: { user_id: author_id } });
+    if (!author) {
+        return res.status(400).json({ error: 'Auteur non trouvé' });
+    }
+    if (!isadminlocal) {
+        return res.status(400).json({ error: 'Vous n\'avez pas la permission de bannir cet utilisateur' });
+    }
+    if (isadminlocal == 0 || author.isadmin == 0) {
+        return res.status(400).json({ error: 'Vous n\'avez pas la permission de bannir cet utilisateur' });
+    }
+
+    const user = await User.findOne({ where: { user_id } });
+    if (!user) {
+        return res.status(400).json({ error: 'Utilisateur non trouvé' });
+    }
+
+    if (user.isbanned === false) {
+        return res.status(400).json({ error: 'Cet utilisateur n\'est pas banni' });
+    }
+
+    await User.update({ isbanned: false }, { where: { user_id } });
+    await User.update({ isbannedreason: null }, { where: { user_id } });
+    res.status(200).json({ message: 'Utilisateur débanni avec succès' });
+    console.log('Utilisateur débanni avec succès');
+} );
+
+router.post('/rankup', async (req, res) => {
+    const {isadminlocal ,author_id, user_id} = req.body;
+
+    const author = await User.findOne({ where: { user_id: author_id } });
+    if (!author || !author_id) {
+        return res.status(400).json({ error: 'Auteur non trouvé' });
+    }
+    if (!user) {
+        return res.status(400).json({ error: 'Utilisateur non trouvé' });
+    }
+    if (!isadminlocal) {
+        return res.status(400).json({ error: 'Vous n\'avez pas la permission de bannir cet utilisateur' });
+    }
+
+
+
+    const user = await User.findOne({ where: { user_id } });
+
+  
+
+    await User.update({ isadmin: 1 }, { where: { user_id } });
+    res.status(200).json({ message: 'Utilisateur promu avec succès' });
+});
+
+
+router.post('/rankdown', async (req, res) => {
+    const {isadminlocal ,author_id, user_id} = req.body;
+
+    const author = await User.findOne({ where: { user_id: author_id } });
+    if (!author || !author_id) {
+        return res.status(400).json({ error: 'Auteur non trouvé' });
+    }
+    const user = await User.findOne({ where: { user_id } });
+    if (!user) {
+        return res.status(400).json({ error: 'Utilisateur non trouvé' });
+    }
+    if (!isadminlocal) {
+        return res.status(400).json({ error: 'Vous n\'avez pas la permission de bannir cet utilisateur' });
+    }
+
+    if (author.isadmin == 0 && author.isadmin == 1 && author.isadmin == 1) {
+        return res.status(400).json({ error: 'Vous n\'avez pas la permission de rétrograder cet utilisateur' });
+    }
+    
+  
+
+    await User.update({ isadmin: 0 }, { where: { user_id } });
+    res.status(200).json({ message: 'Utilisateur rétrogradé avec succès' });
+});
 
 module.exports = router;
